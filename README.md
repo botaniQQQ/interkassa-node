@@ -9,7 +9,7 @@ npm i interkassa-node
 ## Usage
 
 ```javascript
-const interkassa = new (require('interkassa-node'));
+const interkassa = require('interkassa-node');
 
 console.log(interkassa({
     "ik_am": "99",
