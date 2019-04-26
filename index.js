@@ -5,6 +5,7 @@ module.exports = (params, key, signature = false) => {
     let result = {};
     if (signature) {
         let params_arr = [];
+        delete params.ik_sign;
         Object.keys(params).sort().forEach(function (key) {
             params_arr.push(params[key]);
         });
