@@ -1,4 +1,4 @@
-# Generate URL for payment in Interkassa.
+# Generate URL for payment in Interkassa/Free-kassa.
 
 ## Installation
 
@@ -30,11 +30,31 @@ console.log(interkassa({
         ik_sign=biFyHlpFwbM4wWUoToZ4Ew%3D%3D",
 }
  */
+
+console.log(interkassa({
+    "ik_am": "99",
+    "ik_cur": "USD",
+    "ik_pm_no": "ID_234",
+    "ik_desc": "Subscription",
+    "ik_co_id": "132536",
+}, 'secret_word', true, true));
+/* =>
+{
+    "signature": "a1rfzPKzJ5AixEnrVaUqBQ==",
+    "url": "https://www.free-kassa.ru/merchant/cash.php?
+        ik_am=99&
+        ik_cur=USD&
+        ik_pm_no=ID_234&
+        ik_desc=Subscription&
+        ik_co_id=132536&
+        ik_sign=a1rfzPKzJ5AixEnrVaUqBQ%3D%3D",
+}
+ */
 ```
 
 ## API
 
-### interkassa(params, key, signature)
+### interkassa(params, key, signature, free)
 
 #### params
 
@@ -53,6 +73,12 @@ Interkassa secret key.
 Type: `boolean`
 
 Add signature to URL or not.
+
+#### free
+
+Type: `boolean`
+
+Use free-kassa merchant
 
 ## Test
 

@@ -1,6 +1,6 @@
-module.exports = (params, key, signature = false) => {
+module.exports = (params, key, signature = false, free = false) => {
     if (!params || !key || typeof params !== 'object') {
-        throw new Error("Missing params and secret key");
+        throw new Error('Missing params and secret key');
     }
     let result = {};
     if (signature) {
@@ -27,7 +27,7 @@ module.exports = (params, key, signature = false) => {
         result.signature = params.ik_sign;
     }
 
-    let url = 'https://sci.interkassa.com/?';
+    let url = free ? 'https://www.free-kassa.ru/merchant/cash.php?' : 'https://sci.interkassa.com/?';
     Object.keys(params).forEach(function (key) {
         url += key + '=' + encodeURIComponent(params[key]) + '&';
     });
