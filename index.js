@@ -7,7 +7,11 @@ module.exports = (params, key, signature = false, free = false) => {
         let params_arr = [];
         delete params.ik_sign;
         Object.keys(params).sort().forEach(function (key) {
-            params_arr.push(params[key]);
+            if (key === 'ik_am') {
+                params_arr.push(parseFloat(params[key]).toString());
+            } else {
+                params_arr.push(params[key]);
+            }
         });
         params_arr.push(key);
         let params_str = params_arr.join(':');
