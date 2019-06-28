@@ -2,16 +2,13 @@ module.exports = (params, key, signature = false, free = false) => {
     if (!params || !key || typeof params !== 'object') {
         throw new Error('Missing params and secret key');
     }
+    params.ik_am = parseFloat(params.ik_am).toString();
     let result = {};
     if (signature) {
         let params_arr = [];
         delete params.ik_sign;
         Object.keys(params).sort().forEach(function (key) {
-            if (key === 'ik_am') {
-                params_arr.push(parseFloat(params[key]).toString());
-            } else {
-                params_arr.push(params[key]);
-            }
+            params_arr.push(params[key]);
         });
         params_arr.push(key);
         let params_str = params_arr.join(':');
