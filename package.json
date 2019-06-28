@@ -1,7 +1,7 @@
 {
   "name": "interkassa-node",
-  "version": "1.1.5",
-  "description": "Generate URL for payment in Interkassa/Free-kassa.",
+  "version": "1.2.5",
+  "description": "Generate URL for payment in Interkassa.",
   "main": "index.js",
   "scripts": {
     "test": "node test.js"

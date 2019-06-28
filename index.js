@@ -1,40 +1,43 @@
-module.exports = (params, key, signature = false, free = false) => {
+module.exports = (params, key, signature = false) => {
     if (!params || !key || typeof params !== 'object') {
         throw new Error('Missing params and secret key');
     }
+
+    let result = {},
+        params_arr = [],
+        url = 'https://sci.interkassa.com/?';
+
     params = JSON.parse(JSON.stringify(params));
     params.ik_am = parseFloat(params.ik_am).toString();
     Object.keys(params).forEach(function (p) {
-        if (!/^ik_/i.test(p)) {
+        if (!/^ik_/i.test(p) || p === 'ik_sign') {
             delete params[p];
         }
     });
-    let result = {};
-    if (signature) {
-        let params_arr = [];
-        delete params.ik_sign;
-        Object.keys(params).sort().forEach(function (p) {
-            params_arr.push(params[p]);
-        });
-        params_arr.push(key);
-        let params_str = params_arr.join(':');
 
-        if (Buffer.from && Buffer.from !== Uint8Array.from) {
-            params.ik_sign = Buffer.from(
-                require('crypto')
-                    .createHash('md5')
-                    .update(params_str)
-                    .digest('binary'),
-                'binary')
-                .toString('base64');
-        } else {
-            params.ik_sign = new Buffer(params_str, 'binary')
-                .toString('base64');
-        }
-        result.signature = params.ik_sign;
+    Object.keys(params).sort().forEach(function (p) {
+        params_arr.push(params[p]);
+    });
+    params_arr.push(key);
+    let params_str = params_arr.join(':');
+
+    if (Buffer.from && Buffer.from !== Uint8Array.from) {
+        result.signature = Buffer.from(
+            require('crypto')
+                .createHash('md5')
+                .update(params_str)
+                .digest('binary'),
+            'binary')
+            .toString('base64');
+    } else {
+        result.signature = new Buffer(params_str, 'binary')
+            .toString('base64');
     }
 
-    let url = free ? 'https://www.free-kassa.ru/merchant/cash.php?' : 'https://sci.interkassa.com/?';
+    if (signature) {
+        params.ik_sign = result.signature;
+    }
+
     Object.keys(params).forEach(function (p) {
         url += p + '=' + encodeURIComponent(params[p]) + '&';
     });
