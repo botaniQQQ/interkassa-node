@@ -8,7 +8,7 @@ module.exports = (params, key, signature = false) => {
         url = 'https://sci.interkassa.com/?';
 
     params = JSON.parse(JSON.stringify(params));
-    params.ik_am = parseFloat(params.ik_am).toString();
+    
     Object.keys(params).forEach(function (p) {
         if (!/^ik_/i.test(p) || p === 'ik_sign') {
             delete params[p];
@@ -37,6 +37,8 @@ module.exports = (params, key, signature = false) => {
     if (signature) {
         params.ik_sign = result.signature;
     }
+    
+    params.ik_am = parseFloat(params.ik_am).toString();
 
     Object.keys(params).forEach(function (p) {
         url += p + '=' + encodeURIComponent(params[p]) + '&';
